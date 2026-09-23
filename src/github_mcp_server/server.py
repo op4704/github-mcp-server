@@ -12,8 +12,15 @@ it knows what it's allowed to ask for.
 """
 
 from mcp.server.mcpserver import MCPServer
+from mcp.types import ToolAnnotations
 
-from github_mcp_server.github_client import get_open_issues, get_repo_info
+from github_mcp_server.github_client import (
+    add_comment_to_issue,
+    create_label,
+    get_open_issues,
+    get_repo_info,
+    search_issues,
+)
 
 # Step 1: create the server itself. The "name" is what shows up when
 # an AI (or MCP Inspector) connects to it.
@@ -34,7 +41,9 @@ mcp = MCPServer(
 # IMPORTANT: the docstring below is NOT just for humans - the AI
 # reads this exact text to decide whether this is the right tool to
 # use. Clear, specific descriptions = the AI picks correctly.
-@mcp.tool()
+@mcp.tool(
+    annotations=ToolAnnotations(read_only_hint=True, destructive_hint=False)
+)
 def list_open_issues(owner: str, repo: str) -> list[dict]:
     """
     List all currently OPEN issues in a GitHub repository.
@@ -56,7 +65,9 @@ def list_open_issues(owner: str, repo: str) -> list[dict]:
     return get_open_issues(owner, repo)
 
 
-@mcp.tool()
+@mcp.tool(
+    annotations=ToolAnnotations(read_only_hint=True, destructive_hint=False)
+)
 def get_repository_info(owner: str, repo: str) -> dict:
     """
     Get basic stats and info about a GitHub repository.
@@ -74,6 +85,93 @@ def get_repository_info(owner: str, repo: str) -> dict:
         A dict with: name, description, stars, forks, open_issues, url.
     """
     return get_repo_info(owner, repo)
+
+
+@mcp.tool(
+    annotations=ToolAnnotations(read_only_hint=True, destructive_hint=False)
+)
+def search_repository_issues(owner: str, repo: str, keyword: str) -> list[dict]:
+    """
+    Search for issues (open AND closed) in a repo that mention a
+    keyword in their title or body.
+
+    Use this when the user asks things like:
+    - "find issues about login"
+    - "search for bugs mentioning payment"
+    - "is there an issue about X?"
+
+    Args:
+        owner: the GitHub username or organization that owns the repo
+        repo: the repository name
+        keyword: the word or phrase to search for
+
+    Returns:
+        A list of matching issues with: number, title, state, url.
+    """
+    return search_issues(owner, repo, keyword)
+
+
+# ------------------------------------------------------------------
+# WRITE TOOLS BELOW - these change real data on GitHub.
+# destructive_hint=True tells the AI client (and the user) that this
+# tool should NOT run silently - it should ask "are you sure?" first.
+# read_only_hint=False marks it as not a read-only/safe action.
+# ------------------------------------------------------------------
+
+@mcp.tool(
+    annotations=ToolAnnotations(read_only_hint=False, destructive_hint=True)
+)
+def create_repository_label(
+    owner: str, repo: str, name: str, color: str = "ededed",
+    description: str = ""
+) -> dict:
+    """
+    Create a NEW label in a GitHub repository.
+
+    ** THIS CHANGES REAL DATA ON GITHUB. Always confirm with the user
+    before calling this tool. **
+
+    Use this when the user explicitly asks to add/create a label,
+    e.g. "create a 'bug' label" or "add a label called 'urgent'".
+
+    Args:
+        owner: the GitHub username or organization that owns the repo
+        repo: the repository name
+        name: the label's name, e.g. "bug", "needs-review"
+        color: 6-character hex code WITHOUT the '#', e.g. "ff0000"
+        description: optional short description shown on the label
+
+    Returns:
+        The created label's name, color, and url.
+    """
+    return create_label(owner, repo, name, color, description)
+
+
+@mcp.tool(
+    annotations=ToolAnnotations(read_only_hint=False, destructive_hint=True)
+)
+def comment_on_issue(
+    owner: str, repo: str, issue_number: int, comment_body: str
+) -> dict:
+    """
+    Post a NEW comment on an existing GitHub issue.
+
+    ** THIS CHANGES REAL DATA ON GITHUB. Always confirm with the user
+    before calling this tool. **
+
+    Use this when the user explicitly asks to comment/reply on an
+    issue, e.g. "comment on issue #5 saying it's fixed".
+
+    Args:
+        owner: the GitHub username or organization that owns the repo
+        repo: the repository name
+        issue_number: the issue number to comment on
+        comment_body: the text of the comment to post
+
+    Returns:
+        The created comment's id, url, and body text.
+    """
+    return add_comment_to_issue(owner, repo, issue_number, comment_body)
 
 
 def main() -> None:

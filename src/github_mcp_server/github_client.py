@@ -95,6 +95,95 @@ def get_repo_info(owner: str, repo: str) -> dict:
     }
 
 
+def search_issues(owner: str, repo: str, keyword: str) -> list[dict]:
+    """
+    Searches issues (open AND closed) in a repo for a keyword in the
+    title or body.
+
+    Example: search_issues("op4704", "rag-eval-harness", "bug")
+
+    Uses GitHub's dedicated search API, which is different from the
+    plain "list issues" endpoint - it lets us search by text.
+    """
+    url = f"{GITHUB_API_BASE}/search/issues"
+    query = f"repo:{owner}/{repo} is:issue {keyword}"
+    params = {"q": query}
+
+    response = httpx.get(url, headers=_headers(), params=params)
+    response.raise_for_status()
+
+    data = response.json()
+
+    simplified = [
+        {
+            "number": item["number"],
+            "title": item["title"],
+            "state": item["state"],
+            "url": item["html_url"],
+        }
+        for item in data.get("items", [])
+    ]
+
+    return simplified
+
+
+def create_label(owner: str, repo: str, name: str, color: str = "ededed",
+                  description: str = "") -> dict:
+    """
+    Creates a NEW label in a repo.
+
+    ** THIS IS A WRITE ACTION - IT CHANGES REAL DATA **
+    The MCP tool wrapping this function must ask the user to confirm
+    before calling it for real.
+
+    Args:
+        owner, repo: which repository
+        name: the label's name, e.g. "bug", "needs-review"
+        color: 6-character hex code WITHOUT the '#', e.g. "ff0000" for red
+        description: optional short description of the label
+    """
+    url = f"{GITHUB_API_BASE}/repos/{owner}/{repo}/labels"
+    payload = {"name": name, "color": color, "description": description}
+
+    response = httpx.post(url, headers=_headers(), json=payload)
+    response.raise_for_status()
+
+    data = response.json()
+    return {
+        "name": data["name"],
+        "color": data["color"],
+        "url": data["url"],
+    }
+
+
+def add_comment_to_issue(owner: str, repo: str, issue_number: int,
+                          comment_body: str) -> dict:
+    """
+    Posts a NEW comment on an existing issue.
+
+    ** THIS IS A WRITE ACTION - IT CHANGES REAL DATA **
+    The MCP tool wrapping this function must ask the user to confirm
+    before calling it for real.
+
+    Args:
+        owner, repo: which repository
+        issue_number: the issue number to comment on (e.g. 5)
+        comment_body: the text of the comment
+    """
+    url = f"{GITHUB_API_BASE}/repos/{owner}/{repo}/issues/{issue_number}/comments"
+    payload = {"body": comment_body}
+
+    response = httpx.post(url, headers=_headers(), json=payload)
+    response.raise_for_status()
+
+    data = response.json()
+    return {
+        "id": data["id"],
+        "url": data["html_url"],
+        "body": data["body"],
+    }
+
+
 if __name__ == "__main__":
     # Quick manual test - run this file directly to check it works:
     #   uv run python src/github_mcp_server/github_client.py
