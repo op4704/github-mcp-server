@@ -1,0 +1,20 @@
+[project]
+name = "github-mcp-server"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "om panchal", email = "panchalom470@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.28.1",
+    "mcp[cli]>=2.2.0",
+    "python-dotenv>=1.2.3",
+]
+
+[project.scripts]
+github-mcp-server = "github_mcp_server:main"
+
+[build-system]
+requires = ["uv_build>=0.12.7,<0.13.0"]
+build-backend = "uv_build"
