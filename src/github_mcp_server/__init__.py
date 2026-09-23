@@ -1,2 +1,3 @@
-def main() -> None:
-    print("Hello from github-mcp-server!")
+from github_mcp_server.server import main
+
+__all__ = ["main"]
