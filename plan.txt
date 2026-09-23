@@ -1,0 +1,188 @@
+MCP SERVER PROJECT - STEP BY STEP PLAN
+=================================================
+(Do these phases IN ORDER. Each phase = one clear goal. Don't skip ahead.)
+
+==================================================
+PHASE 0: SETUP (get your tools ready)
+==================================================
+Goal: Have a working empty project you can run.
+
+Steps:
+1. Open terminal in O:\Development\mcp creation (or github-mcp-server
+   folder, wherever the code will live).
+2. Install "uv" if not already installed.
+3. Run: uv init   (creates a basic Python project)
+4. Run: uv add mcp httpx python-dotenv pytest
+5. Create a GitHub Personal Access Token:
+   - Go to github.com -> Settings -> Developer settings ->
+     Personal access tokens -> generate new token
+   - Give it "repo" read permission (and write only if you plan to
+     test write tools)
+6. Create a file called ".env" and put your token in it like this:
+      GITHUB_TOKEN=your_token_here
+7. Create ".gitignore" and add ".env" to it (so your token is NEVER
+   uploaded to GitHub - this is important for security).
+
+DONE WHEN: you can run "uv run python -c 'print(1)'" with no errors.
+
+==================================================
+PHASE 1: TALK TO GITHUB (no AI yet, just plain Python)
+==================================================
+Goal: Prove you can fetch real GitHub data using code, before adding
+any AI/MCP complexity.
+
+Steps:
+1. Create github_client.py
+2. Write one function: get_open_issues(repo_owner, repo_name)
+   - Uses httpx to call: GET https://api.github.com/repos/{owner}/{repo}/issues
+   - Sends your token in the header: Authorization: Bearer YOUR_TOKEN
+3. Test it by running the function directly and printing the result.
+
+DONE WHEN: running this file prints real issues from a real GitHub
+repo (use any public repo, even one of your own).
+
+==================================================
+PHASE 2: BUILD THE FIRST MCP TOOL
+==================================================
+Goal: Turn your Phase 1 function into an actual MCP "tool" that an AI
+can call.
+
+Steps:
+1. Create server.py - this is your main MCP server file.
+2. Follow the MCP Python SDK "quickstart" example (from their docs) to
+   set up a bare minimum server.
+3. Register ONE tool: get_open_issues
+   - Give it a clear name and a clear description (this matters a lot
+     - the AI picks tools based on how well you describe them!)
+4. Run the server using MCP Inspector:
+      npx @modelcontextprotocol/inspector uv run server.py
+5. In the Inspector's browser window, manually call your tool and
+   check you get real GitHub data back.
+
+DONE WHEN: MCP Inspector shows your tool working and returning real
+data.
+
+==================================================
+PHASE 3: ADD THE REMAINING 4 TOOLS
+==================================================
+Goal: Build out the full toolset (2 more read tools, 2 write tools).
+
+Steps:
+1. get_repo_info - fetch repo stats (stars, forks, description)
+2. search_issues - search issues by keyword
+3. create_label - (WRITE) add a new label to the repo
+   - IMPORTANT: mark this tool so it needs user confirmation before
+     running for real (check MCP SDK docs for how to flag
+     confirmation-required tools)
+4. add_comment_to_issue - (WRITE) post a comment on an issue
+   - Same rule: needs confirmation
+
+Test EACH tool one at a time in MCP Inspector before moving to the
+next one. Don't build all 4 blind and test at the end.
+
+DONE WHEN: all 5 tools work correctly in MCP Inspector, and the 2
+write tools clearly ask for confirmation before running.
+
+==================================================
+PHASE 4: CONNECT TO A REAL AI (Claude Desktop / Hermes)
+==================================================
+Goal: Actually use your server with a real AI assistant, not just the
+Inspector tool.
+
+Steps:
+1. Find the MCP config file for whichever AI app you're using
+   (Claude Desktop has a config.json for this).
+2. Add your server to the config, pointing at your server.py.
+3. Restart the AI app.
+4. Ask it a real question like "what are the open issues in my repo
+   called X?" and watch it use your tool automatically.
+
+DONE WHEN: you can have a normal conversation with an AI and it
+correctly uses your GitHub tools without you explaining how.
+
+==================================================
+PHASE 5: WRITE TESTS (pytest)
+==================================================
+Goal: Prove the code works reliably, not just "it worked once."
+
+Steps:
+1. Create tests/ folder.
+2. Write a small test for each tool (5 tests total minimum).
+3. For write tools (create_label, add_comment), test against a throwaway
+   test repo, not an important one.
+4. Run: uv run pytest
+5. Fix anything that fails.
+
+DONE WHEN: all tests pass with a single command.
+
+==================================================
+PHASE 6: THE EVALUATION (this is what makes it stand out)
+==================================================
+Goal: Prove, with real numbers, how well the AI uses your tools.
+
+Steps:
+1. Write 50 test questions in evaluation/questions.json
+   - Mix easy ones ("show me open issues") and tricky ones ("what's
+     the most recently updated issue about login problems?")
+   - Include a few TRICK questions where no tool should be used, or
+     the wrong tool could easily be picked.
+2. Write evaluation/run_eval.py
+   - Sends each question to the AI
+   - Records: which tool did it pick? Was it correct? Did it fail?
+3. Run all 50 and save results to evaluation/results.md
+4. Calculate:
+   - Accuracy % = correct tool picked / 50
+   - Failure % = wrong tool or crashed / 50
+5. For every failure, write ONE sentence on why it failed (usually:
+   confusing tool description, missing example, unclear naming).
+6. Improve the tool descriptions based on what you learned.
+7. Re-run the eval and show the improvement (e.g. "went from 78% to
+   94% accuracy after improving descriptions").
+
+DONE WHEN: you have a results.md file with real numbers and a short
+"what I learned and fixed" writeup.
+
+==================================================
+PHASE 7: POLISH FOR PORTFOLIO
+==================================================
+Goal: Make it easy for someone else (recruiter, interviewer) to look
+at this project and immediately understand it.
+
+Steps:
+1. Write a clear README.md:
+   - What it does (2-3 sentences)
+   - How to run it
+   - The evaluation results (accuracy numbers!)
+   - Screenshot or short GIF of it working, if possible
+2. Clean up unused code / debug prints.
+3. Make sure .env is NOT committed (double check .gitignore worked).
+4. Commit everything and push to GitHub (repo already exists:
+   github-mcp-server).
+
+DONE WHEN: someone with zero context could read your README and
+understand exactly what this project does and why it's good.
+
+==================================================
+OPTIONAL PHASE 8: LEVEL UP (only if you want to go further)
+==================================================
+Ideas to make it even stronger:
+- Add a 6th "smart" tool that requires real judgment (not just a
+  simple API wrapper) - e.g. a tool that summarizes all open issues
+  by priority.
+- Try connecting it to a second data source (like Notion) to prove
+  the pattern generalizes beyond GitHub.
+- Write a short blog post / LinkedIn post explaining what you built
+  and what you learned from the evaluation phase.
+
+==================================================
+QUICK PHASE CHECKLIST (tick these off as you go)
+==================================================
+[ ] Phase 0 - Setup
+[ ] Phase 1 - Talk to GitHub (plain Python)
+[ ] Phase 2 - First MCP tool
+[ ] Phase 3 - Remaining 4 tools
+[ ] Phase 4 - Connect to real AI
+[ ] Phase 5 - Tests
+[ ] Phase 6 - Evaluation (50 questions)
+[ ] Phase 7 - Polish for portfolio
+[ ] Phase 8 - (optional) Level up

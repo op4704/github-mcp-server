@@ -1,0 +1,87 @@
+MCP SERVER PROJECT - STRUCTURE & WORKFLOW
+=================================================
+(How the project is organized, and how data flows, in simple words)
+
+--------------------------------------------------
+PART 1: HOW IT WORKS (Simple Story)
+--------------------------------------------------
+Think of it like a restaurant:
+
+- YOU (the AI, like Claude) = the customer
+- MCP SERVER = the waiter
+- GITHUB API = the kitchen
+
+You (the AI) can't walk into the kitchen (GitHub's private data) yourself.
+You tell the waiter (MCP server) what you want ("show me open issues").
+The waiter goes to the kitchen (GitHub API), gets the food (data), and
+brings it back to you in a way you can understand.
+
+The waiter also knows some rules: some things you can just ask for
+(read-only, like "show me issues"), but other things need a manager's
+approval first (like "delete this issue" - needs confirmation).
+
+--------------------------------------------------
+PART 2: DATA FLOW (Step by step)
+--------------------------------------------------
+1. User asks Claude (or another AI) a question, e.g.
+   "What are the open issues in my repo?"
+
+2. Claude realizes it needs a TOOL to answer this (it can't know this on
+   its own - it's private data).
+
+3. Claude calls our MCP Server, using one of our defined tools, e.g.
+   "get_open_issues(repo_name)"
+
+4. Our MCP Server receives this request.
+
+5. MCP Server uses httpx to call GitHub's real API with our stored token.
+
+6. GitHub API sends back the data (list of issues).
+
+7. MCP Server formats this data nicely and sends it back to Claude.
+
+8. Claude reads the data and answers the user in plain English.
+
+--------------------------------------------------
+PART 3: PROJECT FOLDER STRUCTURE
+--------------------------------------------------
+github-mcp-server/
+|
+|-- server.py              <- main file, starts the MCP server
+|
+|-- tools/                 <- one file per "ability" we give the AI
+|   |-- get_issues.py       (read-only: list open issues)
+|   |-- get_repo_info.py    (read-only: repo details)
+|   |-- create_label.py     (write action: needs confirmation)
+|   |-- add_comment.py      (write action: needs confirmation)
+|   |-- search_code.py      (read-only: search inside repo)
+|
+|-- github_client.py       <- shared code that talks to GitHub API
+|                              (uses httpx, handles the auth token)
+|
+|-- .env                   <- secret file, holds GitHub token
+|                              (never uploaded to GitHub - in .gitignore)
+|
+|-- tests/                 <- pytest tests, one per tool
+|   |-- test_get_issues.py
+|   |-- test_create_label.py
+|
+|-- evaluation/            <- the "make it stand out" part
+|   |-- questions.json      (50 test questions)
+|   |-- run_eval.py         (sends questions to AI, records results)
+|   |-- results.md          (final report: accuracy %, failure %)
+|
+|-- requirements.txt / pyproject.toml  <- dependency list
+|-- README.md              <- explains project for GitHub visitors
+
+--------------------------------------------------
+PART 4: THE 5 TOOLS WE ARE BUILDING (simple version)
+--------------------------------------------------
+1. get_open_issues       - READ ONLY - list open issues in a repo
+2. get_repo_info         - READ ONLY - show repo stats (stars, etc.)
+3. search_issues         - READ ONLY - search issues by keyword
+4. create_label          - WRITE (needs confirm) - add a new label
+5. add_comment_to_issue  - WRITE (needs confirm) - post a comment
+
+Rule of thumb: READ tools run automatically. WRITE tools always ask
+"are you sure?" before doing anything, so nothing breaks by accident.

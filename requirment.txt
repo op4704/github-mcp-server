@@ -1,0 +1,58 @@
+MCP SERVER PROJECT - REQUIREMENTS (TECH STACK)
+=================================================
+(What tools/tech we will use to build this project, in simple words)
+
+1. PROGRAMMING LANGUAGE
+   - Python 3.11+
+   - Why: MCP SDK has best support in Python, and it's easy to read/write.
+
+2. MCP SDK
+   - Package: "mcp" (official Python SDK for Model Context Protocol)
+   - Why: This is the core library that lets us build a "server" that AI
+     models like Claude can talk to.
+
+3. HTTP CLIENT
+   - Package: "httpx"
+   - Why: To send requests to GitHub's API (read issues, create labels, etc).
+     We use raw httpx instead of PyGithub so we understand exactly what
+     request/response looks like (better for learning + for interviews).
+
+4. GITHUB API
+   - GitHub REST API (v3) - https://docs.github.com/en/rest
+   - Why: This is the actual data source. Our MCP server is just a
+     "bridge" between AI and GitHub.
+
+5. AUTHENTICATION
+   - GitHub Personal Access Token (PAT) or OAuth token
+   - Stored in a .env file (never committed to GitHub)
+   - Why: GitHub API needs a token to know who is making the request and
+     what they're allowed to see/do.
+
+6. ENVIRONMENT / PACKAGE MANAGER
+   - uv (fast Python package manager)
+   - Why: Faster than pip, and matches what we use in other projects.
+
+7. TESTING
+   - pytest
+   - Why: To write small tests that check each tool works correctly.
+
+8. EVALUATION / TESTING THE AI ITSELF (this is the part that makes the
+   project stand out)
+   - A simple Python script that sends 50 test questions to the AI and
+     records:
+       a) Did the AI pick the correct tool? (accuracy)
+       b) Did the AI pick the wrong tool, or fail to run it? (failure rate)
+   - Output saved as a CSV or Markdown report.
+
+9. MCP INSPECTOR (for testing while building)
+   - Official dev tool: "npx @modelcontextprotocol/inspector"
+   - Why: Lets us click-test our tools in a browser before connecting
+     them to a real AI, so we catch bugs early.
+
+10. VERSION CONTROL
+    - Git + GitHub (repo already exists: github-mcp-server)
+    - Why: To save our work, track changes, and show it in our portfolio.
+
+SUMMARY IN ONE LINE:
+Python + MCP SDK + httpx talk to GitHub's API, tested with MCP Inspector
+and pytest, then measured with a 50-question evaluation script.
