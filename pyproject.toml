@@ -1,7 +1,7 @@
 [project]
 name = "github-mcp-server"
 version = "0.1.0"
-description = "Add your description here"
+description = "MCP server exposing GitHub tools (issues, repo info, labels, comments) to AI assistants, with a 50-question tool-selection accuracy evaluation."
 authors = [
     { name = "om panchal", email = "panchalom470@gmail.com" }
 ]
