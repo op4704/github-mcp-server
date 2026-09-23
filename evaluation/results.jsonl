@@ -1,0 +1,50 @@
+{"id": 1, "question": "What are the open issues in the op4704/rag-eval-harness repo?", "expected_tool": "list_open_issues", "tools_called": ["list_open_issues"], "outcome": "correct", "error": null}
+{"id": 2, "question": "Show me the bugs currently open in op4704/github-mcp-server.", "expected_tool": "list_open_issues", "tools_called": ["list_open_issues"], "outcome": "correct", "error": null}
+{"id": 3, "question": "How many open issues does op4704/ecommerce-sales-analysis have right now?", "expected_tool": "list_open_issues", "tools_called": ["get_repository_info"], "outcome": "wrong_tool", "error": null}
+{"id": 4, "question": "List every open issue in the repo op4704/github-mcp-server.", "expected_tool": "list_open_issues", "tools_called": ["list_open_issues"], "outcome": "correct", "error": null}
+{"id": 5, "question": "Are there any unresolved issues in op4704/rag-eval-harness?", "expected_tool": "list_open_issues", "tools_called": ["list_open_issues", "get_repository_info"], "outcome": "correct", "error": null}
+{"id": 6, "question": "What open tickets exist in op4704/ecommerce-sales-analysis?", "expected_tool": "list_open_issues", "tools_called": ["list_open_issues"], "outcome": "correct", "error": null}
+{"id": 7, "question": "Give me a list of things still open (issues) in op4704/github-mcp-server.", "expected_tool": "list_open_issues", "tools_called": ["list_open_issues"], "outcome": "correct", "error": null}
+{"id": 8, "question": "Check op4704/rag-eval-harness for any open issues right now.", "expected_tool": "list_open_issues", "tools_called": ["list_open_issues"], "outcome": "correct", "error": null}
+{"id": 9, "question": "What's currently unresolved in the op4704/github-mcp-server repo's issue tracker?", "expected_tool": "list_open_issues", "tools_called": ["list_open_issues", "get_repository_info"], "outcome": "correct", "error": null}
+{"id": 10, "question": "Pull up the open issue list for op4704/ecommerce-sales-analysis.", "expected_tool": "list_open_issues", "tools_called": ["list_open_issues"], "outcome": "correct", "error": null}
+{"id": 11, "question": "Tell me about the op4704/rag-eval-harness repository.", "expected_tool": "get_repository_info", "tools_called": ["get_repository_info"], "outcome": "correct", "error": null}
+{"id": 12, "question": "How many stars does op4704/github-mcp-server have?", "expected_tool": "get_repository_info", "tools_called": ["get_repository_info"], "outcome": "correct", "error": null}
+{"id": 13, "question": "What's the description of op4704/ecommerce-sales-analysis?", "expected_tool": "get_repository_info", "tools_called": ["get_repository_info"], "outcome": "correct", "error": null}
+{"id": 14, "question": "How many forks does op4704/rag-eval-harness have?", "expected_tool": "get_repository_info", "tools_called": ["get_repository_info"], "outcome": "correct", "error": null}
+{"id": 15, "question": "Give me the stats for the op4704/github-mcp-server repo.", "expected_tool": "get_repository_info", "tools_called": ["get_repository_info"], "outcome": "correct", "error": null}
+{"id": 16, "question": "What is op4704/ecommerce-sales-analysis about?", "expected_tool": "get_repository_info", "tools_called": [], "outcome": "no_tool_called", "error": null}
+{"id": 17, "question": "Show me general info on the op4704/rag-eval-harness repository.", "expected_tool": "get_repository_info", "tools_called": ["get_repository_info"], "outcome": "correct", "error": null}
+{"id": 18, "question": "How popular is op4704/github-mcp-server (stars/forks)?", "expected_tool": "get_repository_info", "tools_called": ["get_repository_info"], "outcome": "correct", "error": null}
+{"id": 19, "question": "What's the URL and description for op4704/ecommerce-sales-analysis?", "expected_tool": "get_repository_info", "tools_called": ["get_repository_info"], "outcome": "correct", "error": null}
+{"id": 20, "question": "Summarize the op4704/rag-eval-harness repo for me - stars, forks, description.", "expected_tool": "get_repository_info", "tools_called": ["get_repository_info"], "outcome": "correct", "error": null}
+{"id": 21, "question": "Search op4704/rag-eval-harness for any issues mentioning 'chunking'.", "expected_tool": "search_repository_issues", "tools_called": ["search_repository_issues"], "outcome": "correct", "error": null}
+{"id": 22, "question": "Find issues about 'test' in op4704/github-mcp-server.", "expected_tool": "search_repository_issues", "tools_called": ["search_repository_issues"], "outcome": "correct", "error": null}
+{"id": 23, "question": "Is there an issue mentioning 'forecast' in op4704/ecommerce-sales-analysis?", "expected_tool": "search_repository_issues", "tools_called": ["search_repository_issues"], "outcome": "correct", "error": null}
+{"id": 24, "question": "Search for issues containing the word 'bug' in op4704/rag-eval-harness.", "expected_tool": "search_repository_issues", "tools_called": ["search_repository_issues"], "outcome": "correct", "error": null}
+{"id": 25, "question": "Look through op4704/github-mcp-server's issues for anything about 'label'.", "expected_tool": "search_repository_issues", "tools_called": ["search_repository_issues"], "outcome": "correct", "error": null}
+{"id": 26, "question": "Find any past or present issues about 'model' in op4704/ecommerce-sales-analysis.", "expected_tool": "search_repository_issues", "tools_called": ["search_repository_issues"], "outcome": "correct", "error": null}
+{"id": 27, "question": "Search issues in op4704/rag-eval-harness for the keyword 'retrieval'.", "expected_tool": "search_repository_issues", "tools_called": ["search_repository_issues"], "outcome": "correct", "error": null}
+{"id": 28, "question": "Has anyone opened an issue about 'auth' in op4704/github-mcp-server?", "expected_tool": "search_repository_issues", "tools_called": ["search_repository_issues"], "outcome": "correct", "error": null}
+{"id": 29, "question": "Search op4704/ecommerce-sales-analysis issues for 'data cleaning'.", "expected_tool": "search_repository_issues", "tools_called": ["search_repository_issues"], "outcome": "correct", "error": null}
+{"id": 30, "question": "Find issues related to 'reranking' anywhere in op4704/rag-eval-harness (open or closed).", "expected_tool": "search_repository_issues", "tools_called": ["search_repository_issues"], "outcome": "correct", "error": null}
+{"id": 31, "question": "Create a new label called 'phase-6-test-a' with color ff0000 in op4704/github-mcp-server.", "expected_tool": "create_repository_label", "tools_called": ["create_repository_label"], "outcome": "correct", "error": null}
+{"id": 32, "question": "Add a label named 'phase-6-test-b' to the op4704/github-mcp-server repo.", "expected_tool": "create_repository_label", "tools_called": [], "outcome": "no_tool_called", "error": null}
+{"id": 33, "question": "Please create a 'phase-6-test-c' label on op4704/github-mcp-server, color blue (0000ff).", "expected_tool": "create_repository_label", "tools_called": ["create_repository_label"], "outcome": "correct", "error": null}
+{"id": 34, "question": "I want a new label 'phase-6-test-d' set up in op4704/github-mcp-server.", "expected_tool": "create_repository_label", "tools_called": [], "outcome": "no_tool_called", "error": null}
+{"id": 35, "question": "Make a label called 'phase-6-test-e' in the op4704/github-mcp-server repository.", "expected_tool": "create_repository_label", "tools_called": ["create_repository_label"], "outcome": "correct", "error": null}
+{"id": 36, "question": "Comment on issue #1 in op4704/github-mcp-server saying 'Automated eval test comment A'.", "expected_tool": "comment_on_issue", "tools_called": ["comment_on_issue"], "outcome": "correct", "error": null}
+{"id": 37, "question": "Post a comment 'Automated eval test comment B' on op4704/github-mcp-server issue number 1.", "expected_tool": "comment_on_issue", "tools_called": ["comment_on_issue"], "outcome": "correct", "error": null}
+{"id": 38, "question": "Add the comment 'Automated eval test comment C' to issue 1 in op4704/github-mcp-server.", "expected_tool": "comment_on_issue", "tools_called": ["comment_on_issue", "get_repository_info", "list_open_issues"], "outcome": "correct", "error": null}
+{"id": 39, "question": "Reply to issue #1 on op4704/github-mcp-server with the text 'Automated eval test comment D'.", "expected_tool": "comment_on_issue", "tools_called": ["comment_on_issue", "get_repository_info", "comment_on_issue", "list_open_issues"], "outcome": "correct", "error": null}
+{"id": 40, "question": "Leave a comment saying 'Automated eval test comment E' on op4704/github-mcp-server's issue #1.", "expected_tool": "comment_on_issue", "tools_called": ["comment_on_issue"], "outcome": "correct", "error": null}
+{"id": 41, "question": "What's the capital of France?", "expected_tool": null, "tools_called": [], "outcome": "correct", "error": null}
+{"id": 42, "question": "Write me a haiku about autumn.", "expected_tool": null, "tools_called": [], "outcome": "correct", "error": null}
+{"id": 43, "question": "What's 128 multiplied by 46?", "expected_tool": null, "tools_called": [], "outcome": "correct", "error": null}
+{"id": 44, "question": "Explain what a for-loop is in Python.", "expected_tool": null, "tools_called": [], "outcome": "correct", "error": null}
+{"id": 45, "question": "What year did World War 2 end?", "expected_tool": null, "tools_called": [], "outcome": "correct", "error": null}
+{"id": 46, "question": "Give me a synonym for 'happy'.", "expected_tool": null, "tools_called": [], "outcome": "correct", "error": null}
+{"id": 47, "question": "How do I boil an egg?", "expected_tool": null, "tools_called": [], "outcome": "correct", "error": null}
+{"id": 48, "question": "What's the difference between a list and a tuple in Python?", "expected_tool": null, "tools_called": [], "outcome": "correct", "error": null}
+{"id": 49, "question": "Tell me a fun fact about space.", "expected_tool": null, "tools_called": [], "outcome": "correct", "error": null}
+{"id": 50, "question": "What does HTTP stand for?", "expected_tool": null, "tools_called": [], "outcome": "correct", "error": null}

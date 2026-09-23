@@ -53,6 +53,10 @@ def list_open_issues(owner: str, repo: str) -> list[dict]:
     - "show me bugs in X repo"
     - "how many open issues does Y have?"
 
+    NOTE: this returns the actual LIST of issues. If the user just
+    wants a quick COUNT, get_repository_info also has an open_issues
+    number and is cheaper to call for that specific question.
+
     Args:
         owner: the GitHub username or organization that owns the repo
                (e.g. "op4704")
@@ -76,6 +80,10 @@ def get_repository_info(owner: str, repo: str) -> dict:
     - "tell me about this repo"
     - "how many stars does X have?"
     - "what's the description of Y repo?"
+
+    NOTE: this returns an `open_issues` COUNT only (a single number).
+    If the user wants to see the actual list of open issues (titles,
+    numbers, links), use list_open_issues instead - not this tool.
 
     Args:
         owner: the GitHub username or organization that owns the repo

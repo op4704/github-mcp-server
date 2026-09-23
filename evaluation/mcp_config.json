@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "github-mcp-server": {
+      "command": "uv",
+      "args": ["run", "--directory", "O:/Development/mcp creation", "github-mcp-server"]
+    }
+  }
+}
